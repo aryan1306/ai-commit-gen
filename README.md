@@ -12,6 +12,11 @@ An AI-powered commit message generator using OpenAI or Ollama models.
 
 ## Installation
 
+Using Go you can install this using the `go get` command
+```bash
+go get github.com/aryan1306/ai-commit-gen
+```
+Or, using Homebrew on macOS/Linux devices
 ```bash
 brew install aryan1306/tap/ai-commit-gen
 ```
@@ -22,11 +27,11 @@ Before running the program, you need to set up the OpenAI API key in the config 
 
 The structure of the config file should be something like this:
 
-```json
+```js
 {
-  "openai_key": "your-api-key",
+  "openai_key": "your-api-key", // leave it blank if you are not using it
   "ollama_server": "http://localhost:11434/api/chat",
-  "default_model": "deepseek-coder:latest"
+  "default_model": "qwen2.5-coder:3b"
 }
 ```
 
@@ -34,10 +39,13 @@ The structure of the config file should be something like this:
 
 ```bash
 # Generate commit message
-commit-gen
+ai-commit-gen
 
 # Show version
-commit-gen --version
+ai-commit-gen --version
+
+# Select different model other than one mentioned in config
+ai-commit-gen -model=gemma2:latest
 ```
 
 ## Prerequisites
@@ -45,7 +53,7 @@ commit-gen --version
 For Ollama models:
 ```bash
 brew install ollama
-ollama pull deepseek-coder
+ollama pull qwen2.5-coder:3b # or any other Ollama model you like
 ollama serve
 ```
 
