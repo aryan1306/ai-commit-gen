@@ -36,7 +36,7 @@ brews:
     description: "AI-powered commit message generator"
     repository:
       owner: aryan1306
-      name: homebrew-tap
+      name: ai-commit-gen
     directory: Formula
     install: |
       bin.install "ai-commit-gen"
