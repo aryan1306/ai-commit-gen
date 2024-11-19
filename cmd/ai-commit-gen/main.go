@@ -4,7 +4,6 @@ import (
 	"bufio"
 	"flag"
 	"fmt"
-	"log"
 	"os"
 	"strings"
 	"time"
@@ -13,7 +12,6 @@ import (
 	"github.com/aryan1306/ai-commit-gen/internal/clients"
 
 	"github.com/briandowns/spinner"
-	"github.com/joho/godotenv"
 )
 
 var (
@@ -25,18 +23,17 @@ var (
 const MODEL = "gemma2:latest"
 
 func main() {
-	if len(os.Args) > 1 && os.Args[1] == "--version" {
+	versionFlag := flag.Bool("version", false, "Print version information")
+	flag.Parse()
+
+	if *versionFlag {
 		fmt.Printf("commit-gen version %s, commit %s, built at %s\n", version, commit, date)
-		return
-	}
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
+		os.Exit(0)
 	}
 
 	modelFlag := flag.String("model", MODEL, "The AI model to use for generating the commit message")
 	flag.Parse()
-	s := spinner.New(spinner.CharSets[37], 100*time.Millisecond)
+	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
 	s.Suffix = " ✨Generating commit message..."
 	s.Color("green")
 

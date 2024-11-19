@@ -42,7 +42,7 @@ func OpenAiClient(s *spinner.Spinner) {
 	}
 	diffOut := internal.GenerateDiff()
 	OpenAiRequest := RequestBody{
-		Model: "gpt-4o-mini",
+		Model: "gpt-4o",
 		Messages: []Message{
 			{
 				Role:    "system",
@@ -83,18 +83,16 @@ func OpenAiClient(s *spinner.Spinner) {
 		s.Stop()
 		fmt.Println("Error: HTTP status code is not 200")
 	}
-	decoder := json.NewDecoder(resp.Body)
-	for {
-		var response openAiResponse
-		if err := decoder.Decode(&response); err != nil {
-			if err == io.EOF {
-				log.Println("End of response stream")
-				break
-			}
-			log.Printf("Error decoding response: %v\n", err)
-			return
-		}
-		fmt.Print(response.Choices[0].Message.Content)
-		s.Stop()
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		log.Printf("Error reading response body: %v\n", err)
+		os.Exit(1)
 	}
+	var readableResponse openAiResponse
+	if err := json.Unmarshal(body, &readableResponse); err != nil {
+		log.Printf("Error unmarshalling response: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Print(readableResponse.Choices[0].Message.Content)
+	s.Stop()
 }
