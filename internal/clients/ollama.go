@@ -1,7 +1,6 @@
 package clients
 
 import (
-	"ai-commits/internal"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -9,6 +8,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/aryan1306/ai-commit-gen/internal"
+	"github.com/aryan1306/ai-commit-gen/internal/config"
 
 	"github.com/briandowns/spinner"
 )
@@ -57,9 +59,17 @@ const (
 
 func OllamaClient(s *spinner.Spinner, modelFlag string) {
 	diffOut := internal.GenerateDiff()
-
+	var localModel string
+	if modelFlag == "" {
+		localModel = config.LoadConfig().DefaultModel
+	} else if modelFlag == "" && config.LoadConfig().DefaultModel == "" {
+		fmt.Println("No default model found in config file")
+		os.Exit(1)
+	} else {
+		localModel = modelFlag
+	}
 	llamaRequest := RequestBody{
-		Model: modelFlag,
+		Model: localModel,
 		Messages: []Message{
 			{
 				Role:    "user",

@@ -1,7 +1,6 @@
 package clients
 
 import (
-	"ai-commits/internal"
 	"bytes"
 	"encoding/json"
 	"fmt"
@@ -9,6 +8,9 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/aryan1306/ai-commit-gen/internal"
+	"github.com/aryan1306/ai-commit-gen/internal/config"
 
 	"github.com/briandowns/spinner"
 )
@@ -33,7 +35,11 @@ type openAiResponse struct {
 }
 
 func OpenAiClient(s *spinner.Spinner) {
-	openAiKey := os.Getenv("OPEN_AI_API_KEY")
+	localConfig := config.LoadConfig()
+	if localConfig.OpenAIKey == "" {
+		log.Fatal("OpenAI API key not found in config file")
+		os.Exit(1)
+	}
 	diffOut := internal.GenerateDiff()
 	OpenAiRequest := RequestBody{
 		Model: "gpt-4o-mini",
@@ -62,7 +68,7 @@ func OpenAiClient(s *spinner.Spinner) {
 		os.Exit(1)
 	}
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Authorization", "Bearer "+ openAiKey)
+	req.Header.Set("Authorization", "Bearer "+ localConfig.OpenAIKey)
 	client := &http.Client{}
 
 	resp, respErr := client.Do(req)

@@ -9,8 +9,8 @@ import (
 	"strings"
 	"time"
 
-	"ai-commits/internal"
-	"ai-commits/internal/clients"
+	"github.com/aryan1306/ai-commit-gen/internal"
+	"github.com/aryan1306/ai-commit-gen/internal/clients"
 
 	"github.com/briandowns/spinner"
 	"github.com/joho/godotenv"
