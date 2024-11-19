@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/aryan1306/ai-commit-gen/helper"
 	"github.com/aryan1306/ai-commit-gen/internal"
 	"github.com/aryan1306/ai-commit-gen/internal/config"
 
@@ -96,9 +97,10 @@ func OpenAiClient(s *spinner.Spinner) {
 		os.Exit(1)
 	}
 	s.Stop()
+	formattedResponse := helper.FormatResponse(readableResponse.Choices[0].Message.Content)
 	fmt.Println("=====================================================================")
 	fmt.Print("\n")
-	fmt.Println(readableResponse.Choices[0].Message.Content)
+	fmt.Println(formattedResponse)
 	fmt.Print("\n")
 	fmt.Println("=====================================================================")
 }

@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/aryan1306/ai-commit-gen/helper"
 	"github.com/aryan1306/ai-commit-gen/internal"
 	"github.com/aryan1306/ai-commit-gen/internal/config"
 
@@ -76,7 +77,7 @@ func OllamaClient(s *spinner.Spinner, modelFlag string) {
 				Content: SYSTEM_PROMPT + "\n" + STARTER_PROMPT + "\n" + string(diffOut),
 			},
 		},
-		Stream: true,
+		Stream: false,
 	}
 	jsonBody, err := json.Marshal(llamaRequest)
 	if err != nil {
@@ -118,6 +119,10 @@ func OllamaClient(s *spinner.Spinner, modelFlag string) {
 		log.Printf("Error unmarshalling response: %v\n", err)
 		os.Exit(1)
 	}
-	fmt.Println("Response:", readableResponse)
-	fmt.Print(readableResponse.Message.Content)
+	formattedResponse := helper.FormatResponse(readableResponse.Message.Content)
+	fmt.Println("=====================================================================")
+	fmt.Print("\n")
+	fmt.Println(formattedResponse)
+	fmt.Print("\n")
+	fmt.Println("=====================================================================")
 }
