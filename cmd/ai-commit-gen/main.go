@@ -22,7 +22,7 @@ var (
 
 func main() {
 	versionFlag := flag.Bool("version", false, "Print version information")
-	modelFlag := flag.String("model", "", "The AI model to use for generating the commit message")
+	modelFlag := flag.String("model", "", "The Ollama AI model to use for generating the commit message")
 	flag.Parse()
 
 	if *versionFlag {
@@ -35,13 +35,17 @@ func main() {
 	s.Color("green")
 
 	reader := bufio.NewReader(os.Stdin)
-	fmt.Println("Choose an AI model:")
-	fmt.Println("1. OpenAI")
-	fmt.Println("2. Ollama")
-	modelChoice, err := reader.ReadString('\n')
-	if err != nil {
-		fmt.Println("Error reading input")
-		os.Exit(1)
+	var modelChoice string
+	var err error
+	if *modelFlag == ""{
+		fmt.Println("Choose an AI model:")
+		fmt.Println("1. OpenAI")
+		fmt.Println("2. Ollama")
+		modelChoice, err = reader.ReadString('\n')
+		if err != nil {
+			fmt.Println("Error reading input")
+			os.Exit(1)
+		}
 	}
 	
 	internal.StageAllFiles(reader)
@@ -52,14 +56,19 @@ func main() {
 		fmt.Println("Error reading input")
 		os.Exit(1)
 	}
-	if strings.TrimSpace(generateCommitMessage) == "y" {
-		switch strings.TrimSpace(modelChoice) {
-		case "1":
-			clients.OpenAiClient(s)
-		case "2":
+	if strings.ToLower(strings.TrimSpace(generateCommitMessage)) == "y" || strings.TrimSpace(generateCommitMessage) == "" {
+		if *modelFlag == "" {
+
+			switch strings.TrimSpace(modelChoice) {
+			case "1":
+				clients.OpenAiClient(s)
+			case "2":
+				clients.OllamaClient(s, *modelFlag)
+			default:
+				fmt.Println("Invalid choice")
+			}
+		} else {
 			clients.OllamaClient(s, *modelFlag)
-		default:
-			fmt.Println("Invalid choice")
 		}
 	}
 
