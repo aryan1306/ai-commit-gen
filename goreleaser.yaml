@@ -42,3 +42,5 @@ brews:
       bin.install "ai-commit-gen"
     test: |
       system "#{bin}/ai-commit-gen --version"
+release:
+  replace_existing_artifacts: true
