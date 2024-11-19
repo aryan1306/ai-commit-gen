@@ -25,7 +25,7 @@ func main() {
 	flag.Parse()
 
 	if *versionFlag {
-		fmt.Printf("commit-gen version %s, commit %s, built at %s\n", version, commit, date)
+		fmt.Printf("ai-commit-gen version %s, commit %s, built at %s\n", version, commit, date)
 		os.Exit(0)
 	}
 

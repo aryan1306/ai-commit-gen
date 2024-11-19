@@ -63,8 +63,8 @@ func OpenAiClient(s *spinner.Spinner) {
 	s.Start()
 	req, httpErr := http.NewRequest("POST", "https://api.openai.com/v1/chat/completions", bytes.NewBuffer(jsonBody))
 	if httpErr != nil {
-		fmt.Println("Error creating HTTP request")
 		s.Stop()
+		fmt.Println("Error creating HTTP request")
 		os.Exit(1)
 	}
 	req.Header.Set("Content-Type", "application/json")
@@ -73,8 +73,8 @@ func OpenAiClient(s *spinner.Spinner) {
 
 	resp, respErr := client.Do(req)
 	if respErr != nil {
-		fmt.Println("Error sending HTTP request")
 		s.Stop()
+		fmt.Println("Error sending HTTP request")
 		os.Exit(1)
 	}
 	defer resp.Body.Close()
@@ -85,14 +85,20 @@ func OpenAiClient(s *spinner.Spinner) {
 	}
 	body, err := io.ReadAll(resp.Body)
 	if err != nil {
+		s.Stop()
 		log.Printf("Error reading response body: %v\n", err)
 		os.Exit(1)
 	}
 	var readableResponse openAiResponse
 	if err := json.Unmarshal(body, &readableResponse); err != nil {
+		s.Stop()
 		log.Printf("Error unmarshalling response: %v\n", err)
 		os.Exit(1)
 	}
-	fmt.Print(readableResponse.Choices[0].Message.Content)
 	s.Stop()
+	fmt.Println("=====================================================================")
+	fmt.Print("\n")
+	fmt.Println(readableResponse.Choices[0].Message.Content)
+	fmt.Print("\n")
+	fmt.Println("=====================================================================")
 }

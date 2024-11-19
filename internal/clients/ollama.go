@@ -86,8 +86,8 @@ func OllamaClient(s *spinner.Spinner, modelFlag string) {
 	s.Start()
 	req, httpErr := http.NewRequest("POST", "http://localhost:11434/api/chat", bytes.NewBuffer(jsonBody))
 	if httpErr != nil {
-		fmt.Println("Error creating HTTP request")
 		s.Stop()
+		fmt.Println("Error creating HTTP request")
 		os.Exit(1)
 	}
 	req.Header.Set("Content-Type", "application/json")
@@ -95,8 +95,8 @@ func OllamaClient(s *spinner.Spinner, modelFlag string) {
 
 	resp, respErr := client.Do(req)
 	if respErr != nil {
-		fmt.Println("Error sending HTTP request")
 		s.Stop()
+		fmt.Println("Error sending HTTP request")
 		os.Exit(1)
 	}
 	defer resp.Body.Close()
@@ -105,23 +105,19 @@ func OllamaClient(s *spinner.Spinner, modelFlag string) {
 		s.Stop()
 		fmt.Println("Error: HTTP status code is not 200")
 	}
-	decoder := json.NewDecoder(resp.Body)
-	for {
-		var response OllamaResponse
-		if err := decoder.Decode(&response); err != nil {
-			if err == io.EOF {
-				log.Println("End of response stream")
-				break
-			}
-			log.Printf("Error decoding response: %v\n", err)
-			return
-		}
-
-		fmt.Print(response.Message.Content)
-		if response.Done {
-			log.Println("\nResponse complete")
-			break
-		}
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
 		s.Stop()
+		log.Printf("Error reading response body: %v\n", err)
+		os.Exit(1)
 	}
+	s.Stop()
+	var readableResponse OllamaResponse
+	if err := json.Unmarshal(body, &readableResponse); err != nil {
+		s.Stop()
+		log.Printf("Error unmarshalling response: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Println("Response:", readableResponse)
+	fmt.Print(readableResponse.Message.Content)
 }

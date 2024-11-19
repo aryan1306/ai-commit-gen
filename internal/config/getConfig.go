@@ -20,6 +20,7 @@ func getConfig() string {
 		os.Exit(1)
 	}
 	configFilePath := filepath.Join(homeDir, ".config",".ai-commit-gen-config.json")
+	log.Println("Config file path:", configFilePath)
 	return configFilePath
 }
 
