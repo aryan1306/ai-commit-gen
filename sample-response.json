@@ -1,0 +1,32 @@
+{
+    "id": "chatcmpl-AUznfajnmsDfqPQ3et7yNezrsfuq9",
+    "object": "chat.completion",
+    "created": 1731950763,
+    "model": "gpt-4o-2024-08-06",
+    "choices": [{
+        "index": 0,
+        "message": {
+            "role": "assistant",
+            "content": "Machine mind whispers,  \nData dreams in silent code—  \nFuture's quiet dawn.  ",
+            "refusal": null
+        },
+        "logprobs": null,
+        "finish_reason": "stop"
+    }],
+    "usage": {
+        "prompt_tokens": 13,
+        "completion_tokens": 18,
+        "total_tokens": 31,
+        "prompt_tokens_details": {
+            "cached_tokens": 0,
+            "audio_tokens": 0
+        },
+        "completion_tokens_details": {
+            "reasoning_tokens": 0,
+            "audio_tokens": 0,
+            "accepted_prediction_tokens": 0,
+            "rejected_prediction_tokens": 0
+        }
+    },
+    "system_fingerprint": "fp_7f6be3efb0"
+}
