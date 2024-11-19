@@ -20,8 +20,6 @@ var (
 	date    = "unknown"
 )
 
-const MODEL = "gemma2:latest"
-
 func main() {
 	versionFlag := flag.Bool("version", false, "Print version information")
 	flag.Parse()
@@ -31,7 +29,7 @@ func main() {
 		os.Exit(0)
 	}
 
-	modelFlag := flag.String("model", MODEL, "The AI model to use for generating the commit message")
+	modelFlag := flag.String("model", "", "The AI model to use for generating the commit message")
 	flag.Parse()
 	s := spinner.New(spinner.CharSets[11], 100*time.Millisecond)
 	s.Suffix = " ✨Generating commit message..."

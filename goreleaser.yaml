@@ -1,3 +1,5 @@
+version: 2
+
 before:
   hooks:
     - go mod tidy
@@ -11,15 +13,13 @@ builds:
     goarch:
       - amd64
       - arm64
-    goarm:
-      - 6
-      - 7
     main: ./cmd/ai-commit-gen
-    ldflags: - -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
+    ldflags:
+      - -s -w -X main.version={{.Version}} -X main.commit={{.Commit}} -X main.date={{.Date}}
     binary: ai-commit-gen
 archives:
   - format: tar.gz
-    name_template: >- 
+    name_template: >-
       {{ .ProjectName }}_
       {{- title .Os }}_
       {{- if eq .Arch "amd64" }}x86_64
@@ -29,17 +29,15 @@ archives:
         format: zip
     files:
       - README.md
+      - LICENSE
 brews:
   - name: ai-commit-gen
-    homepage: https://github.com/aryan1306/ai-commit-gen
+    homepage: "https://github.com/aryan1306/ai-commit-gen"
     description: "AI-powered commit message generator"
     repository:
       owner: aryan1306
       name: homebrew-tap
-    commit_author:
-      name: aryan1306
-      email: aryan.singhal@gmail.com
-    folder: Formula
+    directory: Formula
     install: |
       bin.install "ai-commit-gen"
     test: |

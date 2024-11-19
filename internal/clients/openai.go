@@ -49,7 +49,7 @@ func OpenAiClient(s *spinner.Spinner) {
 				Content: SYSTEM_PROMPT,
 			},
 			{
-				Role:    "user",
+				Role:    ROLE,
 				Content: STARTER_PROMPT + "\n" + string(diffOut),
 			},
 		},

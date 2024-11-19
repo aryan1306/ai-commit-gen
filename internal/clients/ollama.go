@@ -72,7 +72,7 @@ func OllamaClient(s *spinner.Spinner, modelFlag string) {
 		Model: localModel,
 		Messages: []Message{
 			{
-				Role:    "user",
+				Role:    ROLE,
 				Content: SYSTEM_PROMPT + "\n" + STARTER_PROMPT + "\n" + string(diffOut),
 			},
 		},
