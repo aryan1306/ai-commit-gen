@@ -18,6 +18,7 @@ go get github.com/aryan1306/ai-commit-gen
 ```
 Or, using Homebrew on macOS/Linux devices
 ```bash
+brew tap aryan1306/ai-commit-gen
 brew install ai-commit-gen
 ```
 
